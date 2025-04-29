@@ -3,7 +3,8 @@ import os
 from pathlib import Path
 import platform
 import random
-import subprocess
+
+import sys
 import time
 import gtn
 import ttt
@@ -29,11 +30,13 @@ def Mac():
     print("Goodbye. 👋🍏💥")
     file_name = f"{login_user}.mgtgterminalgameuser"
     file_path = users_folder / file_name
+    
     with open(file_path, "r") as file:
         lines = file.readlines()
         lines[1] = "Ban\n"
     with open(file_path, "w") as file:
         file.writelines(lines)
+    sys.exit()
 def DisplayTitle():
     print("Terminal Game \n [1] Signup \n [2] Login \n [3] Exit \n")
     number = input("Which one? ")
@@ -75,22 +78,29 @@ def DisplayTitle():
         with open(file_path, "r") as file:
             true_password = file.readline().strip()
             login_status = file.readline().strip()
-        if (login_pwd == true_password and not login_status == "Ban"):
+        if (login_pwd == true_password and not login_status == "Ban" and not platform.system() == "Darwin"):
             print("You have been logged in")
             DisplayLoggedInTitle()
-        else:
+        elif(login_pwd !=true_password):
             print("you are a hacker :(")
-            exit()
+            sys.exit()
             DisplayTitle()
+        elif(login_status == "Ban"):
+            print("By the way, if you did not know, your account is banned")
+            sys.exit()
+        elif platform.system == "Darwin":
+            Mac()
+        
         number = ""
         DisplayTitle()
     if (number == "3"):
-        exit()
+        sys.exit()
 
     number = ""
     DisplayTitle()
 
 def DisplayLoggedInTitle():
+    global admin
     print("Terminal Game \n [1] Signup \n [2] Exit \n [3] Games \n [4] Leaderboards \n [5] Admin \n")
     number = input("Which one? ")
     if (number == "1"):
@@ -119,7 +129,7 @@ def DisplayLoggedInTitle():
         
     
     if (number == "2"):
-        exit()
+        sys.exit()
     if (number == "3"):
         print("Coming Soon! \n \n \n \n \n \n \n \n \n \n \n \n")
         print("[1] Tic Tac Toe \n[2] Guess The Number \n")
@@ -239,7 +249,7 @@ def DisplayLoggedInTitle():
 
                 print("You have been banned. Goodbye. 😎")
                 time.sleep(2)
-            exit()
+            sys.exit()
             quit()
 
 
